@@ -43,7 +43,7 @@ class CustomTextField: UITextField {
 
         
         if let phText = self.placeholder {
-            self.attributedPlaceholder = NSAttributedString(string: phText, attributes: [NSForegroundColorAttributeName: UIColor(netHex: 0xB3B3B3)])
+            self.attributedPlaceholder = NSAttributedString(string: phText, attributes: [NSAttributedStringKey.foregroundColor: UIColor(netHex: 0xB3B3B3)])
             
         }
         

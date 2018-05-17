@@ -9,22 +9,22 @@
 import UIKit
 import CoreData
 
-class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ItemDetailsVC: UIViewController, UINavigationControllerDelegate {
     
-    @IBOutlet weak var itemName: CustomTextField!
-    @IBOutlet weak var itemPrice: CustomTextField!
-    @IBOutlet weak var details: CustomTextField!
-    @IBOutlet weak var storePicker: UIPickerView!
-    @IBOutlet weak var typePicker: UIPickerView!
-    @IBOutlet weak var thumbImage: UIImageView!
-    @IBOutlet weak var saveStoreButton: UIButton!
-    @IBOutlet weak var loadTestData: UIButton!
+    // Outlets
+    @IBOutlet private weak var itemNameTextField: CustomTextField!
+    @IBOutlet private weak var itemPriceTextField: CustomTextField!
+    @IBOutlet private weak var itemDetailsTextField: CustomTextField!
+    @IBOutlet private weak var storePicker: UIPickerView!
+    @IBOutlet private weak var typePicker: UIPickerView!
+    @IBOutlet private weak var thumbImage: UIImageView!
+    @IBOutlet private weak var saveStoreButton: UIButton!
     
-    
-    var stores = [Store]()
-    var types = [ItemType]()
+    // Variables
+    private var stores = [Store]()
+    private var types = [ItemType]()
     var itemToEdit: Item?
-    var imagePicker: UIImagePickerController!
+    private var imagePicker: UIImagePickerController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +32,10 @@ class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         if let topItem = self.navigationController?.navigationBar.topItem {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         }
+        
+        itemNameTextField.delegate = self
+        itemPriceTextField.delegate = self
+        itemDetailsTextField.delegate = self
         
         storePicker.dataSource = self
         storePicker.delegate = self
@@ -47,63 +51,30 @@ class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
             loadItemData()
         }
         
-        if storePicker.numberOfRows(inComponent: 0) == 0 {
-            saveStoreButton.isHidden = true
-            loadTestData.isHidden = false
-            storePicker.isHidden = true
-            typePicker.isHidden = true
-        } else {
-            saveStoreButton.isHidden = false
-            loadTestData.isHidden = true
-        }
+//        if storePicker.numberOfRows(inComponent: 0) == 0 {
+//            saveStoreButton.isHidden = true
+//            loadTestData.isHidden = false
+//            storePicker.isHidden = true
+//            typePicker.isHidden = true
+//        } else {
+//            saveStoreButton.isHidden = false
+//            loadTestData.isHidden = true
+//        }
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {        let store = stores[row]
-        let type = types[row]
-        
-        if pickerView.tag == 0 {
-            return store.name
-        } else if pickerView.tag == 1 {
-            return type.type
-        } else {
-            return "Empty Data"
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if pickerView.tag == 0 {
-            return stores.count
-        } else if pickerView.tag == 1 {
-            return types.count
-        } else {
-            return 0
-        }
-    }
-    
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        //update when selected
-    }
-    
-    
-    
-
-    @IBAction func loadTestDataButtonPressed(_ sender: Any) {
-        if stores.count == 0 {
-            getTestData()
-            getData()
-            storePicker.reloadAllComponents()
-            typePicker.reloadAllComponents()
-            loadTestData.isHidden = true
-            storePicker.isHidden = false
-            typePicker.isHidden = false
-            saveStoreButton.isHidden = false
-        }
-    }
+    // Controller Actions
+//    @IBAction func loadTestDataButtonPressed(_ sender: Any) {
+//        if stores.count == 0 {
+//            getTestData()
+//            getData()
+//            storePicker.reloadAllComponents()
+//            typePicker.reloadAllComponents()
+//            loadTestData.isHidden = true
+//            storePicker.isHidden = false
+//            typePicker.isHidden = false
+//            saveStoreButton.isHidden = false
+//        }
+//    }
     
     @IBAction func saveItemButtonPressed(_ sender: Any) {
         
@@ -114,22 +85,21 @@ class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         if itemToEdit == nil {
             item = Item(context: context)
         } else {
-        item = itemToEdit
+            item = itemToEdit
         }
-        
         
         picture.image = thumbImage.image
         item.toImage = picture
 
-        if let title = itemName.text {
+        if let title = itemNameTextField.text {
             item.title = title
         }
         
-        if let price = itemPrice.text {
+        if let price = itemPriceTextField.text {
             item.price = (price as NSString).doubleValue
         }
         
-        if let details = details.text {
+        if let details = itemDetailsTextField.text {
             item.details = details
         }
 
@@ -151,14 +121,18 @@ class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         }
     }
     
+    @IBAction func addImageButtonPressed(_ sender: UIButton) {
+        present(imagePicker, animated: false, completion: nil)
+    }
     
+    // Controller Methods
     func loadItemData() {
         
         if let item = itemToEdit {
             
-            itemName.text = item.title
-            itemPrice.text = "\(item.price)"
-            details.text = item.details
+            itemNameTextField.text = item.title
+            itemPriceTextField.text = "\(item.price)"
+            itemDetailsTextField.text = item.details
             thumbImage.image = item.toImage?.image as? UIImage
 
             if let store = item.toStore {
@@ -190,6 +164,7 @@ class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
     }
     
     func getData() {
+        
         let storeFetchRequest: NSFetchRequest<Store> = Store.fetchRequest()
         let typeFetchRequest: NSFetchRequest<ItemType> = ItemType.fetchRequest()
         
@@ -203,41 +178,16 @@ class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         }
     }
     
-    
-    func getTestData(){
-        
-        let store1 = Store(context: context)
-        store1.name = "Akropolis"
-        let store2 = Store(context: context)
-        store2.name = "Ozas"
-        let store3 = Store(context: context)
-        store3.name = "Gariunu Turgus"
-        let store4 = Store(context: context)
-        store4.name = "Panorama"
-        let store5 = Store(context: context)
-        store5.name = "Mega"
-        let store6 = Store(context: context)
-        store6.name = "Europa"
-    
-        let type1 = ItemType(context: context)
-        type1.type = "Books"
-        let type2 = ItemType(context: context)
-        type2.type = "Cosmetics"
-        let type3 = ItemType(context: context)
-        type3.type = "Clothes"
-        let type4 = ItemType(context: context)
-        type4.type = "Electronics"
-        let type5 = ItemType(context: context)
-        type5.type = "Tools"
-        let type6 = ItemType(context: context)
-        type6.type = "Other"
-        
-        ad.saveContext()
+}
+
+extension ItemDetailsVC: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
-    
-    @IBAction func addImageButtonPressed(_ sender: UIButton) {
-        present(imagePicker, animated: false, completion: nil)
-    }
+}
+
+extension ItemDetailsVC: UIImagePickerControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let img = info[UIImagePickerControllerOriginalImage] as? UIImage {
@@ -245,6 +195,38 @@ class ItemDetailsVC: UIViewController, UIPickerViewDelegate, UIPickerViewDataSou
         }
         imagePicker.dismiss(animated: false, completion: nil)
     }
+    
 }
 
-
+extension ItemDetailsVC: UIPickerViewDelegate, UIPickerViewDataSource {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {        let store = stores[row]
+        let type = types[row]
+        
+        if pickerView.tag == 0 {
+            return store.name
+        } else if pickerView.tag == 1 {
+            return type.type
+        } else {
+            return "Empty Data"
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if pickerView.tag == 0 {
+            return stores.count
+        } else if pickerView.tag == 1 {
+            return types.count
+        } else {
+            return 0
+        }
+    }
+    
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        //update when selected
+    }
+}
