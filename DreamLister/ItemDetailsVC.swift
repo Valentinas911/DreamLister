@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ItemDetailsVC: UIViewController, UINavigationControllerDelegate {
+class ItemDetailsVC: UIViewController, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
     
     // Outlets
     @IBOutlet private weak var itemNameTextField: CustomTextField!
@@ -33,6 +33,8 @@ class ItemDetailsVC: UIViewController, UINavigationControllerDelegate {
             topItem.backBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: nil, action: nil)
         }
         
+        addGestureRecognizer()
+        
         itemNameTextField.delegate = self
         itemPriceTextField.delegate = self
         itemDetailsTextField.delegate = self
@@ -51,32 +53,11 @@ class ItemDetailsVC: UIViewController, UINavigationControllerDelegate {
             loadItemData()
         }
         
-//        if storePicker.numberOfRows(inComponent: 0) == 0 {
-//            saveStoreButton.isHidden = true
-//            loadTestData.isHidden = false
-//            storePicker.isHidden = true
-//            typePicker.isHidden = true
-//        } else {
-//            saveStoreButton.isHidden = false
-//            loadTestData.isHidden = true
-//        }
     }
     
     // Controller Actions
-//    @IBAction func loadTestDataButtonPressed(_ sender: Any) {
-//        if stores.count == 0 {
-//            getTestData()
-//            getData()
-//            storePicker.reloadAllComponents()
-//            typePicker.reloadAllComponents()
-//            loadTestData.isHidden = true
-//            storePicker.isHidden = false
-//            typePicker.isHidden = false
-//            saveStoreButton.isHidden = false
-//        }
-//    }
     
-    @IBAction func saveItemButtonPressed(_ sender: Any) {
+    @IBAction fileprivate func saveItemButtonPressed(_ sender: Any) {
         
         var item: Item!
         
@@ -112,7 +93,7 @@ class ItemDetailsVC: UIViewController, UINavigationControllerDelegate {
 
     }
     
-    @IBAction func deleteButtonPressed(_ sender: Any) {
+    @IBAction fileprivate func deleteButtonPressed(_ sender: Any) {
         if itemToEdit != nil {
             context.delete(itemToEdit!)
             ad.saveContext()
@@ -121,12 +102,22 @@ class ItemDetailsVC: UIViewController, UINavigationControllerDelegate {
         }
     }
     
-    @IBAction func addImageButtonPressed(_ sender: UIButton) {
+    @IBAction fileprivate func addImageButtonPressed(_ sender: UIButton) {
         present(imagePicker, animated: false, completion: nil)
     }
     
     // Controller Methods
-    func loadItemData() {
+    
+    fileprivate func addGestureRecognizer() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc fileprivate func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    fileprivate func loadItemData() {
         
         if let item = itemToEdit {
             
@@ -163,7 +154,7 @@ class ItemDetailsVC: UIViewController, UINavigationControllerDelegate {
         }
     }
     
-    func getData() {
+    fileprivate func getData() {
         
         let storeFetchRequest: NSFetchRequest<Store> = Store.fetchRequest()
         let typeFetchRequest: NSFetchRequest<ItemType> = ItemType.fetchRequest()
