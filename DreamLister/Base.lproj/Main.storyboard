@@ -33,6 +33,7 @@
                                     <segment title="Price"/>
                                     <segment title="Title"/>
                                     <segment title="Type"/>
+                                    <segment title="Store"/>
                                 </segments>
                                 <color key="tintColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
@@ -130,6 +131,25 @@
                                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="materialDesign" value="YES"/>
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bqe-GL-8lS">
+                                                            <rect key="frame" x="175" y="8" width="89" height="16"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="16" id="Xht-36-LCP"/>
+                                                            </constraints>
+                                                            <attributedString key="attributedText">
+                                                                <fragment content="Store">
+                                                                    <attributes>
+                                                                        <color key="NSColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                                        <font key="NSFont" size="12" name="BigCaslon-Medium"/>
+                                                                        <paragraphStyle key="NSParagraphStyle" alignment="right" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                                    </attributes>
+                                                                </fragment>
+                                                            </attributedString>
+                                                            <nil key="highlightedColor"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="materialDesign" value="YES"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </label>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
@@ -139,6 +159,9 @@
                                                         <constraint firstItem="auy-wP-JpF" firstAttribute="top" secondItem="6EO-e0-dcX" secondAttribute="bottom" id="Hzu-l3-r0V"/>
                                                         <constraint firstItem="vY9-GM-VGm" firstAttribute="top" secondItem="57n-ph-Qvb" secondAttribute="top" constant="8" id="IWB-Fe-qn6"/>
                                                         <constraint firstItem="6EO-e0-dcX" firstAttribute="leading" secondItem="57n-ph-Qvb" secondAttribute="leading" constant="100" id="QYq-tm-kLh"/>
+                                                        <constraint firstItem="Bqe-GL-8lS" firstAttribute="leading" secondItem="vY9-GM-VGm" secondAttribute="trailing" constant="8" id="VDe-Zb-Xap"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Bqe-GL-8lS" secondAttribute="trailing" constant="8" id="VHp-Fb-0Yc"/>
+                                                        <constraint firstItem="Bqe-GL-8lS" firstAttribute="top" secondItem="57n-ph-Qvb" secondAttribute="top" constant="8" id="WiZ-Zf-kHu"/>
                                                         <constraint firstItem="T71-wP-lgB" firstAttribute="leading" secondItem="57n-ph-Qvb" secondAttribute="leading" constant="100" id="Zvc-Ob-4aI"/>
                                                         <constraint firstItem="f9L-1H-JuR" firstAttribute="top" secondItem="57n-ph-Qvb" secondAttribute="top" constant="4" id="alE-ZH-7zn"/>
                                                         <constraint firstItem="vY9-GM-VGm" firstAttribute="leading" secondItem="57n-ph-Qvb" secondAttribute="leading" constant="100" id="bHT-Fz-oE2"/>
@@ -147,7 +170,6 @@
                                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6EO-e0-dcX" secondAttribute="trailing" id="jB8-bD-SHy"/>
                                                         <constraint firstItem="6EO-e0-dcX" firstAttribute="top" secondItem="vY9-GM-VGm" secondAttribute="bottom" id="rIc-uM-YCm"/>
                                                         <constraint firstItem="auy-wP-JpF" firstAttribute="leading" secondItem="f9L-1H-JuR" secondAttribute="trailing" constant="6" id="xV8-Vs-7fL"/>
-                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="vY9-GM-VGm" secondAttribute="trailing" id="xiK-Zh-oew"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="materialDesign" value="YES"/>
@@ -167,6 +189,7 @@
                                         <connections>
                                             <outlet property="details" destination="T71-wP-lgB" id="cUn-h8-OEY"/>
                                             <outlet property="price" destination="6EO-e0-dcX" id="WYj-Hj-pR0"/>
+                                            <outlet property="storeLabel" destination="Bqe-GL-8lS" id="jDy-Aq-C4o"/>
                                             <outlet property="thumb" destination="f9L-1H-JuR" id="IDQ-fZ-BBS"/>
                                             <outlet property="title" destination="vY9-GM-VGm" id="Xjy-Qq-Jbp"/>
                                             <outlet property="type" destination="auy-wP-JpF" id="Eeb-Fd-MzM"/>

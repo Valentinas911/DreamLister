@@ -16,6 +16,7 @@ class ItemCell: UITableViewCell {
     @IBOutlet weak var type: UILabel!
     //description is often a reserved word. Use details!!!
     @IBOutlet weak var details: UILabel!
+    @IBOutlet weak var storeLabel: UILabel!
     
     func configureCell(item:Item) {
         title.text = item.title
@@ -23,6 +24,7 @@ class ItemCell: UITableViewCell {
         details.text = item.details
         type.text = item.toItemType?.type
         thumb.image = item.toImage?.image as? UIImage
+        storeLabel.text = item.toStore?.name
     }
 
 }

@@ -49,6 +49,8 @@ class MainVC: UIViewController {
         let priceSort = NSSortDescriptor(key: "price", ascending: false)
         let titleSort = NSSortDescriptor(key: "title", ascending: true)
         let typeSort = NSSortDescriptor(key: "toItemType", ascending: false)
+        let storeSort = NSSortDescriptor(key: "toStore.name", ascending: true)
+       
         
         if segment.selectedSegmentIndex == 0 {
             fetchRequest.sortDescriptors = [dateSort]
@@ -58,6 +60,8 @@ class MainVC: UIViewController {
             fetchRequest.sortDescriptors = [titleSort]
         } else if segment.selectedSegmentIndex == 3 {
             fetchRequest.sortDescriptors = [typeSort]
+        } else if segment.selectedSegmentIndex == 4 {
+            fetchRequest.sortDescriptors = [storeSort]
         }
         
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
